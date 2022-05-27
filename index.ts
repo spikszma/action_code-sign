@@ -56,13 +56,13 @@ async function addCertificateToStore(){
 
 async function signWithSigntool(fileName: string) {
     try {
-        // var command = `"${signtool}" sign /sm /t ${timestampUrl} /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" ${fileName}`
+        // var command = `"${signtool}" sign /sm /tr ${timestampUrl} /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" ${fileName}`
         var vitalParameterIncluded = false; 
         var timestampUrl : string = core.getInput('timestampUrl');
         if (timestampUrl === '') {
           timestampUrl = 'http://timestamp.digicert.com'; // 'http://timestamp.digicert.com';//
         }
-        var command = `"${signtool}" sign /sm /t ${timestampUrl}`
+        var command = `"${signtool}" sign /sm /tr ${timestampUrl}`
         const sha1 : string= core.getInput('certificatesha1');
         if (sha1 != ''){
             command = command + ` /sha1 "${sha1}"`
