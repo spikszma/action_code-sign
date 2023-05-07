@@ -55,7 +55,7 @@ async function addCertificateToStore(){
 
 async function signWithSigntool(fileName: string) {
     try {
-        // var command = `"${signtool}" sign /sm /tr ${timestampUrl} /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" ${fileName}`
+        // var command = `"${signtool}" sign /sm /tr ${timestampUrl} /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" "${fileName}"`
         let vitalParameterIncluded = false;
         let timestampUrl: string = core.getInput('timestampUrl');
         if (timestampUrl === '') {
@@ -75,7 +75,7 @@ async function signWithSigntool(fileName: string) {
         if (!vitalParameterIncluded) {
             console.log('You need to include a NAME or a SHA1 Hash for the certificate to sign with.')
         }
-        command = `${command} ${fileName}`;
+        command = `${command} "${fileName}"`;
         console.log(`Signing command: ${command}`);
         const { stdout } = await asyncExec(command);
         console.log(stdout);
