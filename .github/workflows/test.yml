@@ -80,7 +80,7 @@ jobs:
         with:
           type: zip
           filename: 'test-1'
-          directory: tmp
+          directory: './tmp'
           path: '.'
           env_variable: 'zip_1'
           #inclusions: 'a'
@@ -102,7 +102,7 @@ jobs:
         with:
           type: zip
           filename: 'test-2'
-          directory: tmp
+          directory: './tmp'
           path: '.'
           env_variable: 'zip_2'
           #inclusions: 'a'
@@ -111,9 +111,10 @@ jobs:
           debug: ${{ inputs.DEBUG_MODE }}
 
       - name: Publish archives
-        continue-on-error: false
+        continue-on-error: true
         uses: deep-soft/action-gh-release@v1
         with:
+          fail_on_unmatched_files: false
           draft: true
           tag_name: test_archives
           files: |
