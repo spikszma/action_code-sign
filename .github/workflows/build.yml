@@ -9,13 +9,13 @@ on:
         default: false
         required: true
 
-  pull_request:
-  push:
-    paths-ignore:
-    - "README.md"
-    branches:
-      - master
-      - releases/*
+#  pull_request:
+#  push:
+#    paths-ignore:
+#    - "README.md"
+#    branches:
+#      - master
+#      - releases/*
 
 jobs:
   build:
