@@ -1,0 +1,77 @@
+name: test download and sign
+on:
+  workflow_dispatch:
+    inputs:
+      DEBUG_MODE:
+        description: DEBUG_MODE
+        default: 'no'
+
+jobs:
+  test_download:
+    name: test_download-${{ matrix.job.cfg }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { cfg: win, os: windows-latest }
+    steps:
+      - name: checkout
+        uses: deep-soft/checkout@v3
+
+      - name: test download
+        shell: bash
+        run: |
+          name_common=$(cat bin/bin-common.txt);
+          name_7z=$(cat bin/bin-${{ matrix.job.cfg }}.txt);
+          echo $name_common;
+          echo $name_7z;
+          #curl refs/tags/bins/$name_7z -o $name_7z;
+          mkdir tmp
+          pushd tmp
+          echo "curl -LOJ $name_common$name_7z;"
+          curl -LOJ $name_common$name_7z;
+          # name_7z_full=$(find . -type f -name $name_7z -print0 | xargs -0 realpath)
+          name_7z_full=$(find . -name "$name_7z" | xargs readlink -f)
+          echo "name_7z_full=$name_7z_full" >> $GITHUB_ENV
+          echo "list: pushd"
+          ls -l
+          popd
+          echo "list: popd"
+          ls -l
+      
+      - name: test unpack
+        shell: bash
+        run: |
+          pushd tmp
+          echo "name_7z_full: ${{ env.name_7z_full }}"
+          file "${{ env.name_7z_full }}"
+          xz -vt "${{ env.name_7z_full }}"
+          # if [ "${{ matrix.job.cfg }}" == "win" ]; then
+          #   xz -9 ${{ env.name_7z_full }}
+          #   name_xz_full=$(find . -name "*.xz" | xargs readlink -f)
+          #   ls -l $name_xz_full
+          #   echo "name_xz_full=$name_xz_full" >> $GITHUB_ENV            
+          # else
+          #   xz -vt "${{ env.name_7z_full }}"
+          # fi
+          popd
+
+      - name: test sign
+        uses: deep-soft/code-sign-action@v8
+        with:
+          certificate: '${{ secrets.WINDOWS_PFX_BASE64 }}'
+          password: '${{ secrets.WINDOWS_PFX_PASSWORD }}'
+          certificatesha1: '${{ secrets.WINDOWS_PFX_SHA1_THUMBPRINT }}'
+          # certificatename: '${{ secrets.CERTNAME }}'
+          folder: './tmp'
+          recursive: true
+
+#      - name: Upload Artifact
+#        if: ${{ matrix.job.cfg == 'win' }}
+#        uses: deep-soft/upload-artifact@v3
+#        with:
+#          name: xz
+#          path: |
+#            ${{ env.name_xz_full }}
+#            tmp
