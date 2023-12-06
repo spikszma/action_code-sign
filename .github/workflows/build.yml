@@ -33,6 +33,7 @@ jobs:
           node-version: 16.x
 
       - run: npm install
+      - run: npm i --save-dev @types/node
 
       - run: npm ci
 
