@@ -40,7 +40,7 @@ jobs:
           echo "list: popd"
           ls -l
       
-      - name: test unpack
+      - name: test archive
         shell: bash
         run: |
           pushd tmp
@@ -55,6 +55,15 @@ jobs:
           # else
           #   xz -vt "${{ env.name_7z_full }}"
           # fi
+          popd
+
+      - name: unpack archive
+        shell: bash
+        run: |
+          pushd tmp
+          echo "name_7z_full: ${{ env.name_7z_full }}"
+          file "${{ env.name_7z_full }}"
+          tar -xf "${{ env.name_7z_full }}"
           popd
 
       - name: test sign
