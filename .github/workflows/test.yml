@@ -63,10 +63,10 @@ jobs:
           pushd tmp
           echo "name_7z_full: ${{ env.name_7z_full }}"
           file "${{ env.name_7z_full }}"
-          tar -xf "${{ env.name_7z_full }}"
+          xz -d "${{ env.name_7z_full }}"
           popd
 
-      - name: test sign
+      - name: test sign 1
         uses: deep-soft/code-sign-action@v8
         with:
           certificate: '${{ secrets.WINDOWS_PFX_BASE64 }}'
@@ -75,6 +75,51 @@ jobs:
           # certificatename: '${{ secrets.CERTNAME }}'
           folder: './tmp'
           recursive: true
+
+      - uses: deep-soft/zip-release@main
+        with:
+          type: "${{ matrix.job.type }}"
+          filename: 'test-1'
+          directory: ./tmp
+          path: '.'
+          env_variable: 'zip_1'
+          #inclusions: 'a'
+          #exclusions: 'someotherfile*'
+          verbose: ${{ inputs.DEBUG_MODE }}
+          debug: ${{ inputs.DEBUG_MODE }}
+
+      - name: test sign 2
+        uses: deep-soft/code-sign-action@v8
+        with:
+          certificate: '${{ secrets.WINDOWS_PFX_BASE64 }}'
+          password: '${{ secrets.WINDOWS_PFX_PASSWORD }}'
+          certificatesha1: '${{ secrets.WINDOWS_PFX_SHA1_THUMBPRINT }}'
+          # certificatename: '${{ secrets.CERTNAME }}'
+          folder: './tmp'
+          recursive: true
+
+      - uses: deep-soft/zip-release@main
+        with:
+          type: "${{ matrix.job.type }}"
+          filename: 'test-2'
+          directory: ./tmp
+          path: '.'
+          env_variable: 'zip_2'
+          #inclusions: 'a'
+          #exclusions: 'someotherfile*'
+          verbose: ${{ inputs.DEBUG_MODE }}
+          debug: ${{ inputs.DEBUG_MODE }}
+
+      - name: Publish archives
+        continue-on-error: false
+        uses: deep-soft/action-gh-release@v1
+        with:
+          draft: true
+          tag_name: test_archives
+          files: |
+            ${{ env.zip_1 }}
+            ${{ env.zip_2 }}
+            ./tmp/*
 
 #      - name: Upload Artifact
 #        if: ${{ matrix.job.cfg == 'win' }}
