@@ -78,9 +78,9 @@ jobs:
 
       - uses: deep-soft/zip-release@main
         with:
-          type: "${{ matrix.job.type }}"
+          type: zip
           filename: 'test-1'
-          directory: ./tmp
+          directory: tmp
           path: '.'
           env_variable: 'zip_1'
           #inclusions: 'a'
@@ -100,9 +100,9 @@ jobs:
 
       - uses: deep-soft/zip-release@main
         with:
-          type: "${{ matrix.job.type }}"
+          type: zip
           filename: 'test-2'
-          directory: ./tmp
+          directory: tmp
           path: '.'
           env_variable: 'zip_2'
           #inclusions: 'a'
