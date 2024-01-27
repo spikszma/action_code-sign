@@ -25,7 +25,7 @@ jobs:
         operating-system: [windows-latest]
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node 20
         uses: actions/setup-node@v4
@@ -63,7 +63,7 @@ jobs:
 
       - name: Publish artifact
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2
         with:
           draft: true
           tag_name: npm-build-dist
@@ -87,7 +87,7 @@ jobs:
       - name: Publish artifact - ALL
         if: ${{ inputs.archive_ALL }}
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2
         with:
           draft: true
           tag_name: npm-build-ALL
