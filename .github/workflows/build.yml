@@ -63,7 +63,7 @@ jobs:
 
       - name: Publish artifact
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2
+        uses: deep-soft/action-gh-release@v2.1
         with:
           draft: true
           tag_name: npm-build-dist
@@ -87,7 +87,7 @@ jobs:
       - name: Publish artifact - ALL
         if: ${{ inputs.archive_ALL }}
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2
+        uses: deep-soft/action-gh-release@v2.1
         with:
           draft: true
           tag_name: npm-build-ALL
