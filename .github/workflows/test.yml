@@ -17,7 +17,7 @@ jobs:
           - { cfg: win, os: windows-latest }
     steps:
       - name: checkout
-        uses: deep-soft/checkout@v3
+        uses: deep-soft/checkout@v4
 
       - name: test download
         shell: bash
@@ -76,7 +76,7 @@ jobs:
           folder: './tmp'
           recursive: true
 
-      - uses: deep-soft/zip-release@main
+      - uses: deep-soft/zip-release@v2
         with:
           type: zip
           filename: 'test-1'
@@ -98,7 +98,7 @@ jobs:
           folder: './tmp'
           recursive: true
 
-      - uses: deep-soft/zip-release@main
+      - uses: deep-soft/zip-release@v2
         with:
           type: zip
           filename: 'test-2'
@@ -112,7 +112,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           fail_on_unmatched_files: false
           draft: true
