@@ -55,13 +55,13 @@ async function addCertificateToStore(){
 
 async function signWithSigntool(fileName: string) {
     try {
-        // var command = `"${signtool}" sign /as /sm /tr ${timestampUrl} /td SHA256 /fd SHA256 /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" "${fileName}"`
+        // var command = `"${signtool}" sign /sm /tr ${timestampUrl} /td SHA256 /fd SHA256 /sha1 "1d7ec06212fdeae92f8d3010ea422ecff2619f5d"  /n "DanaWoo" "${fileName}"`
         let vitalParameterIncluded = false;
         let timestampUrl: string = core.getInput('timestampUrl');
         if (timestampUrl === '') {
           timestampUrl = 'http://rfc3161timestamp.globalsign.com/advanced'; // 'http://rfc3161timestamp.globalsign.com/advanced';//
         }
-        let command = `"${signtool}" sign /as /sm /tr ${timestampUrl} /td SHA256 /fd SHA256`
+        let command = `"${signtool}" sign /sm /tr ${timestampUrl} /td SHA256 /fd SHA256`
         const sha1: string = core.getInput('certificatesha1');
         if (sha1 != '') {
             command = command + ` /sha1 "${sha1}"`
