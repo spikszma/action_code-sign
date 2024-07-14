@@ -76,7 +76,7 @@ jobs:
           folder: './tmp'
           recursive: true
 
-      - uses: deep-soft/zip-release@v2
+      - uses: deep-soft/zip-release@v3
         with:
           type: zip
           filename: 'test-1'
@@ -98,7 +98,7 @@ jobs:
           folder: './tmp'
           recursive: true
 
-      - uses: deep-soft/zip-release@v2
+      - uses: deep-soft/zip-release@v3
         with:
           type: zip
           filename: 'test-2'
