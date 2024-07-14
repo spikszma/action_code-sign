@@ -108,7 +108,8 @@ async function* getFiles(folder: string, recursive: boolean): any {
         const stat = await fs.stat(fullPath);
         if (stat.isFile()) {
             const extension = path.extname(file);
-            if (signtoolFileExtensions.includes(extension) || extension == '.nupkg') {
+            // if (signtoolFileExtensions.includes(extension) || extension == '.nupkg') {
+            if (signtoolFileExtensions.includes(extension)) {
                 yield fullPath;
             }
         } else if (stat.isDirectory() && recursive) {
